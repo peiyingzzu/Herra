@@ -43,8 +43,13 @@ public class UserInfoServiceImpl implements UserInfoService {
 			synchronized (this) {
 				List<String> sequenceUserNo = userInfoBaseService.getSequenceUserNo(userInfoBO.getUserno());
 				Optional<String> userNoMax = sequenceUserNo.stream().max((a, b) -> a.compareTo(b));
-				String sequence = userNoMax.get().substring(userNo.length());
-				int nexSequence = Integer.parseInt(sequence) + 1;
+				String sequence = userNoMax.get().substring(userNo.length());;
+				int nexSequence = 0;
+				if (sequence.length() == 0) {
+					nexSequence = 2;
+				} else {
+					nexSequence = Integer.parseInt(sequence) + 1;
+				}
 				return ResponseBuilder.fail(CodeConstant.USER_HAS_EXIST,
 						"UserNo is exist, please try " + userNo + nexSequence);
 			}
