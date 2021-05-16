@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.peiying.herra.mapper.ItemSgRelationMapper">
+  <resultMap id="BaseResultMap" type="com.peiying.herra.po.ItemSgRelation">
+    <id column="Id" jdbcType="INTEGER" property="id" />
+    <result column="ItemId" jdbcType="INTEGER" property="itemid" />
+    <result column="SgId" jdbcType="INTEGER" property="sgid" />
+    <result column="CreateBy" jdbcType="VARCHAR" property="createby" />
+    <result column="CreateTime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="UpdateBy" jdbcType="VARCHAR" property="updateby" />
+    <result column="UpdateTime" jdbcType="TIMESTAMP" property="updatetime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    Id, ItemId, SgId, CreateBy, CreateTime, UpdateBy, UpdateTime
+  </sql>
+  <select id="selectByExample" parameterType="com.peiying.herra.po.ItemSgRelationExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from itemsgrelation
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from itemsgrelation
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from itemsgrelation
+    where Id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.peiying.herra.po.ItemSgRelationExample">
+    delete from itemsgrelation
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.peiying.herra.po.ItemSgRelation">
+    insert into itemsgrelation (Id, ItemId, SgId, 
+      CreateBy, CreateTime, UpdateBy, 
+      UpdateTime)
+    values (#{id,jdbcType=INTEGER}, #{itemid,jdbcType=INTEGER}, #{sgid,jdbcType=INTEGER}, 
+      #{createby,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}, #{updateby,jdbcType=VARCHAR}, 
+      #{updatetime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.peiying.herra.po.ItemSgRelation">
+    insert into itemsgrelation
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        Id,
+      </if>
+      <if test="itemid != null">
+        ItemId,
+      </if>
+      <if test="sgid != null">
+        SgId,
+      </if>
+      <if test="createby != null">
+        CreateBy,
+      </if>
+      <if test="createtime != null">
+        CreateTime,
+      </if>
+      <if test="updateby != null">
+        UpdateBy,
+      </if>
+      <if test="updatetime != null">
+        UpdateTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="itemid != null">
+        #{itemid,jdbcType=INTEGER},
+      </if>
+      <if test="sgid != null">
+        #{sgid,jdbcType=INTEGER},
+      </if>
+      <if test="createby != null">
+        #{createby,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateby != null">
+        #{updateby,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.peiying.herra.po.ItemSgRelationExample" resultType="java.lang.Long">
+    select count(*) from itemsgrelation
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update itemsgrelation
+    <set>
+      <if test="record.id != null">
+        Id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.itemid != null">
+        ItemId = #{record.itemid,jdbcType=INTEGER},
+      </if>
+      <if test="record.sgid != null">
+        SgId = #{record.sgid,jdbcType=INTEGER},
+      </if>
+      <if test="record.createby != null">
+        CreateBy = #{record.createby,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createtime != null">
+        CreateTime = #{record.createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateby != null">
+        UpdateBy = #{record.updateby,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updatetime != null">
+        UpdateTime = #{record.updatetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update itemsgrelation
+    set Id = #{record.id,jdbcType=INTEGER},
+      ItemId = #{record.itemid,jdbcType=INTEGER},
+      SgId = #{record.sgid,jdbcType=INTEGER},
+      CreateBy = #{record.createby,jdbcType=VARCHAR},
+      CreateTime = #{record.createtime,jdbcType=TIMESTAMP},
+      UpdateBy = #{record.updateby,jdbcType=VARCHAR},
+      UpdateTime = #{record.updatetime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.peiying.herra.po.ItemSgRelation">
+    update itemsgrelation
+    <set>
+      <if test="itemid != null">
+        ItemId = #{itemid,jdbcType=INTEGER},
+      </if>
+      <if test="sgid != null">
+        SgId = #{sgid,jdbcType=INTEGER},
+      </if>
+      <if test="createby != null">
+        CreateBy = #{createby,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        CreateTime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateby != null">
+        UpdateBy = #{updateby,jdbcType=VARCHAR},
+      </if>
+      <if test="updatetime != null">
+        UpdateTime = #{updatetime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.peiying.herra.po.ItemSgRelation">
+    update itemsgrelation
+    set ItemId = #{itemid,jdbcType=INTEGER},
+      SgId = #{sgid,jdbcType=INTEGER},
+      CreateBy = #{createby,jdbcType=VARCHAR},
+      CreateTime = #{createtime,jdbcType=TIMESTAMP},
+      UpdateBy = #{updateby,jdbcType=VARCHAR},
+      UpdateTime = #{updatetime,jdbcType=TIMESTAMP}
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

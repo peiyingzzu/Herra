@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" ><mapper namespace="com.example.demo.mapper.ConsumeMapper" >
+    <resultMap id="BaseResultMap" type="com.peiying.herra.po.Consume" >
+        <id column="coid" property="coid" jdbcType="INTEGER" />
+        <result column="pid" property="pid" jdbcType="INTEGER" />
+        <result column="cid" property="cid" jdbcType="INTEGER" />
+        <result column="consnum" property="consnum" javaType="INTEGER"/>
+    </resultMap>
+    
+    <sql id="Base_Column_List" >
+    SELECT
+    coid,
+    pid,
+    cid,
+    consnum
+    FROM Consume
+    </sql>
+
+    <select id="selectAll" resultMap="BaseResultMap"  >
+       <include refid="Base_Column_List" />
+    </select>
+
+    <select id="loadById" parameterType="java.lang.Integer" resultMap="BaseResultMap" >
+       <include refid="Base_Column_List" />
+    WHERE coid = #{coid}
+    </select>
+
+    <insert id="insert" parameterType="com.peiying.herra.po.Consume" >
+       INSERT INTO Consume
+    (
+    coid,
+    pid,
+    cid,
+    consnum
+         ) 
+        VALUES
+    (#{coid}, #{pid},#{cid} ,#{consnum})
+    </insert>
+
+</mapper>
