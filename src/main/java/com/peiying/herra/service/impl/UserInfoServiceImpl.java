@@ -19,6 +19,7 @@ import com.peiying.herra.service.base.UserInfoBaseService;
 public class UserInfoServiceImpl implements UserInfoService {
 	@Autowired
 	private UserInfoBaseService userInfoBaseService;
+	
 
 	public Response<Boolean> addUser(UserInfoBO userInfoBO) {
 		if (userInfoBO == null) {
@@ -43,7 +44,8 @@ public class UserInfoServiceImpl implements UserInfoService {
 			synchronized (this) {
 				List<String> sequenceUserNo = userInfoBaseService.getSequenceUserNo(userInfoBO.getUserno());
 				Optional<String> userNoMax = sequenceUserNo.stream().max((a, b) -> a.compareTo(b));
-				String sequence = userNoMax.get().substring(userNo.length());;
+				String sequence = userNoMax.get().substring(userNo.length());
+				;
 				int nexSequence = 0;
 				if (sequence.length() == 0) {
 					nexSequence = 2;
