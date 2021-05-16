@@ -1,14 +1,16 @@
 package com.peiying.herra.mapper;
 
-import com.peiying.herra.po.UserInfo;
-import com.peiying.herra.po.UserInfoExample;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+
+import com.peiying.herra.po.UserInfo;
+import com.peiying.herra.po.UserInfoExample;
+
 @Mapper
 public interface UserInfoMapper {
-    long countByExample(UserInfoExample example);
+	long countByExample(UserInfoExample example);
 
 	int deleteByExample(UserInfoExample example);
 
@@ -29,5 +31,7 @@ public interface UserInfoMapper {
 	int updateByPrimaryKeySelective(UserInfo record);
 
 	int updateByPrimaryKey(UserInfo record);
+
+	List<String> getSequenceUserNo(String userNo);
 
 }

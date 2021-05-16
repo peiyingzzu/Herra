@@ -288,5 +288,10 @@
       UpdateTime = #{updatetime,jdbcType=TIMESTAMP}
     where Id = #{id,jdbcType=BIGINT}
   </update>
-
+	<select id="getSequenceUserNo" parameterType="java.lang.String" resultType="java.util.List">
+		SELECT UserNo
+		FROM userinfo
+		WHERE
+		UserNo like '#{userNo}%'
+	</select>
 </mapper>

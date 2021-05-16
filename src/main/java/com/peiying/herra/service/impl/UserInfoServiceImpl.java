@@ -1,41 +1,61 @@
 package com.peiying.herra.service.impl;
 
 import java.util.List;
+import java.util.Optional;
 
-import org.springframework.beans.BeanUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.peiying.herra.bo.UserInfoBO;
-import com.peiying.herra.mapper.UserInfoMapper;
+import com.peiying.herra.common.constants.CodeConstant;
+import com.peiying.herra.common.utils.Response;
+import com.peiying.herra.common.utils.ResponseBuilder;
 import com.peiying.herra.po.UserInfo;
-import com.peiying.herra.po.UserInfoExample;
+import com.peiying.herra.service.UserInfoService;
+import com.peiying.herra.service.base.UserInfoBaseService;
 
 @Service
-public class UserInfoServiceImpl implements com.peiying.herra.service.UserInfoService {
-@Autowired
-private UserInfoMapper userInfoMapper;
-	public boolean addUser(UserInfoBO userInfoBO) {
-		UserInfo user = new UserInfo();
-		BeanUtils.copyProperties(userInfoBO, user, UserInfo.class);
-		try {
-		return userInfoMapper.insertSelective(user) > 0;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
+public class UserInfoServiceImpl implements UserInfoService {
+	@Autowired
+	private UserInfoBaseService userInfoBaseService;
+
+	public Response<Boolean> addUser(UserInfoBO userInfoBO) {
+		if (userInfoBO == null) {
+			return ResponseBuilder.fail(CodeConstant.BAD_REQUEST, "requrest is null");
 		}
+		if (userInfoBO.getDepid() == null) {
+			return ResponseBuilder.fail(CodeConstant.BAD_REQUEST, "requrest is null");
+		}
+		if (StringUtils.isAnyEmpty(userInfoBO.getCreateby(), userInfoBO.getName(), userInfoBO.getPhone(),
+				userInfoBO.getUserno())) {
+			return ResponseBuilder.fail(CodeConstant.BAD_REQUEST, "requrest is null");
+		}
+		String phone = userInfoBO.getPhone();
+		UserInfo userByUserNO = userInfoBaseService.getUserByPhone(phone);
+		if (userByUserNO != null) {
+			return ResponseBuilder.fail(CodeConstant.USER_HAS_EXIST,
+					"phone is exist, please try with username is " + userByUserNO.getUserno());
+		}
+		String userNo = userInfoBO.getUserno();
+		userByUserNO = userInfoBaseService.getUserByUserNO(userInfoBO.getUserno());
+		if (userByUserNO != null) {
+			synchronized (this) {
+				List<String> sequenceUserNo = userInfoBaseService.getSequenceUserNo(userInfoBO.getUserno());
+				Optional<String> userNoMax = sequenceUserNo.stream().max((a, b) -> a.compareTo(b));
+				String sequence = userNoMax.get().substring(userNo.length());
+				int nexSequence = Integer.parseInt(sequence) + 1;
+				return ResponseBuilder.fail(CodeConstant.USER_HAS_EXIST,
+						"UserNo is exist, please try " + userNo + nexSequence);
+			}
+		}
+
+		boolean addUser = userInfoBaseService.addUser(userInfoBO);
+		return ResponseBuilder.success(addUser);
 	}
-	public UserInfo getUserByUserNO(String userNO) {
-		UserInfoExample example = new UserInfoExample();
-		example.createCriteria().andUsernoEqualTo(userNO);
-		List<UserInfo> list = userInfoMapper.selectByExample(example);
-		if (list == null || list.isEmpty()) {
-			return null;
-		}
-		if (list.size() > 1) {
-			System.out.println("Error ! query user by userNO return more than 1 result ww");
-			return null;
-		}
-		return list.get(0);
+
+	public Response<UserInfo> getUserByUserNO(String userNO) {
+		UserInfo result = userInfoBaseService.getUserByUserNO(userNO);
+		return ResponseBuilder.success(result);
 	}
 }
