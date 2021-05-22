@@ -8,4 +8,5 @@ public abstract class CodeConstant {
 	
 	//用户相关
 	public static int USER_HAS_EXIST = 601;//用户已经存在
+	public static int USERNAME_PASSWORD_NOT_MATCH = 602; //用户名密码错误
 }

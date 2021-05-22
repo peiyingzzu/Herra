@@ -18,4 +18,12 @@ public class UserAccountBaseService {
 			return false;
 		}
 	}
+
+	public AccountInfo selectByUserNameAndPassword(String userName, String password) {
+		try {
+			return userAccountInfoMapper.selectByUserNameAndPassword(userName, password);
+		} catch (Exception e) {
+			return null;
+		}
+	}
 }

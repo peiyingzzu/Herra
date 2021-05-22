@@ -3,8 +3,8 @@
 <mapper namespace="com.peiying.herra.mapper.UserAccountInfoMapper">
   <resultMap id="BaseResultMap" type="com.peiying.herra.po.AccountInfo">
     <id column="Id" jdbcType="BIGINT" property="id" />
-    <result column="userName" jdbcType="VARCHAR" property="UserName" />
-    <result column="password" jdbcType="VARCHAR" property="Password" />
+    <result column="UserName" jdbcType="VARCHAR" property="userName" />
+    <result column="Password" jdbcType="VARCHAR" property="password" />
     <result column="CreateBy" jdbcType="VARCHAR" property="createby" />
     <result column="CreateTime" jdbcType="TIMESTAMP" property="createtime" />
     <result column="UpdateBy" jdbcType="VARCHAR" property="updateby" />
@@ -59,4 +59,11 @@
       </if>
     </trim>
 </insert>
+<select id="selectByUserNameAndPassword" parameterType="java.lang.String">
+	SELECT * FROM UserAccountInfo
+	WHERE
+	UserName = #{userName,jdbcType=VARCHAR}
+	AND
+	Password =  #{password,jdbcType=VARCHAR}
+</select>
 </mapper>

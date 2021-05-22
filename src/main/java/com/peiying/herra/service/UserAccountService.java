@@ -6,4 +6,6 @@ public interface UserAccountService {
 	Response<Boolean> logup(String userName, String password);
 
 	Response<Boolean> login(String userName, String password);
+
+	Response<Boolean> logout(String userName);
 }

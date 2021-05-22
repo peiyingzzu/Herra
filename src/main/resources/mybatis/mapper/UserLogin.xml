@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.peiying.herra.mapper.UserLoginMapper">
+	<resultMap id="BaseResultMap"
+		type="com.peiying.herra.po.UserLogin">
+		<id column="Id" jdbcType="BIGINT" property="id" />
+		<result column="UserName" jdbcType="VARCHAR"
+			property="userName" />
+		<result column="SessionId" jdbcType="VARCHAR"
+			property="sessionId" />
+		<result column="Token" jdbcType="VARCHAR" property="token" />
+		<result column="Status" jdbcType="INTEGER" property="status" />
+		<result column="CreateBy" jdbcType="VARCHAR"
+			property="createBy" />
+		<result column="CreateTime" jdbcType="TIMESTAMP"
+			property="createTime" />
+		<result column="UpdateBy" jdbcType="VARCHAR"
+			property="updateBy" />
+		<result column="UpdateTime" jdbcType="TIMESTAMP"
+			property="updateTime" />
+	</resultMap>
+	<insert id="add" parameterType="com.peiying.herra.po.UserLogin">
+		INSERT INTO UserLogin
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				Id,
+			</if>
+			<if test="userName != null">
+				UserName,
+			</if>
+			<if test="sessionId != null">
+				SessionId,
+			</if>
+			<if test="token != null">
+				Token,
+			</if>
+			<if test="status != null">
+				Status,
+			</if>
+			<if test="createby != null">
+				CreateBy,
+			</if>
+			<if test="createtime != null">
+				CreateTime,
+			</if>
+			<if test="updateby != null">
+				UpdateBy,
+			</if>
+			<if test="updatetime != null">
+				UpdateTime,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="userName != null">
+				#{userName,jdbcType=VARCHAR},
+			</if>
+			<if test="sessionId != null">
+				#{sessionId,jdbcType=VARCHAR},
+			</if>
+			<if test="token != null">
+				#{token,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=INTEGER},
+			</if>
+			<if test="createby != null">
+				#{createby,jdbcType=VARCHAR},
+			</if>
+			<if test="createtime != null">
+				#{createtime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateby != null">
+				#{updateby,jdbcType=VARCHAR},
+			</if>
+			<if test="updatetime != null">
+				#{updatetime,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+
+	<update id="updateByUserName"
+		parameterType="com.peiying.herra.po.UserLogin">
+		UPDATE UserLogin
+		SET
+		<if test="sessionId != null">
+			SessionId = #{sessionId,jdbcType=VARCHAR},
+		</if>
+		<if test="token != null">
+			Token = #{token,jdbcType=VARCHAR},
+		</if>
+		<if test="status != null">
+			Status = #{status,jdbcType=INTEGER},
+		</if>
+		<if test="updateby != null">
+			Updateby = #{updateby,jdbcType=VARCHAR},
+		</if>
+		<if test="updatetime != null">
+			Updatetime = #{updatetime,jdbcType=TIMESTAMP},
+		</if>
+		WHERE
+		UserName = #{userName,jdbcType=VARCHAR}
+	</update>
+
+	<update id="updateBySessionId"
+		parameterType="com.peiying.herra.po.UserLogin">
+		UPDATE UserLogin
+		SET
+		<if test="token != null">
+			Token = #{token,jdbcType=VARCHAR},
+		</if>
+		<if test="status != null">
+			Status = #{status,jdbcType=INTEGER},
+		</if>
+		<if test="updateby != null">
+			UpdateBy = #{updateBy,jdbcType=VARCHAR},
+		</if>
+		<if test="updatetime != null">
+			UpdateTime = #{updateTime,jdbcType=TIMESTAMP},
+		</if>
+		WHERE
+		SessionId = #{sessionId,jdbcType=VARCHAR}
+	</update>
+
+	<select id="selectByUserName" parameterType="java.lang.String" resultMap="BaseResultMap">
+		SELECT * FROM UserLogin
+		WHERE UserName = #{userName, jdbcType=VARCHAR}
+	</select>
+	<select id="selectBySessionId" parameterType="java.lang.String" resultMap="BaseResultMap">
+		SELECT * FROM UserLogin
+		WHERE SessionId = #{sessionId, jdbcType=VARCHAR}
+	</select>
+	
+</mapper>

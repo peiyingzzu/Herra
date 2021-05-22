@@ -19,7 +19,6 @@ import com.peiying.herra.service.base.UserInfoBaseService;
 public class UserInfoServiceImpl implements UserInfoService {
 	@Autowired
 	private UserInfoBaseService userInfoBaseService;
-	
 
 	public Response<Boolean> addUser(UserInfoBO userInfoBO) {
 		if (userInfoBO == null) {
@@ -52,8 +51,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 				} else {
 					nexSequence = Integer.parseInt(sequence) + 1;
 				}
-				return ResponseBuilder.fail(CodeConstant.USER_HAS_EXIST,
-						"UserNo is exist, please try " + userNo + nexSequence);
+				return ResponseBuilder.fail(CodeConstant.USER_HAS_EXIST, "UserNo is exist, please try " + userNo + nexSequence);
 			}
 		}
 
