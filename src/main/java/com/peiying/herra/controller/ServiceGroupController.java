@@ -31,7 +31,5 @@ public class ServiceGroupController {
 		} catch (Exception e) {
 			return ResponseBuilder.fail(CodeConstant.SYS_ERR, "系统异常");
 		}
-
 	}
-
 }

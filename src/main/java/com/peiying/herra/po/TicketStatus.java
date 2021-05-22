@@ -26,7 +26,7 @@ public class TicketStatus {
     private String updateby;
 
     private Date updatetime;
-
+    
     public Long getId() {
         return id;
     }
