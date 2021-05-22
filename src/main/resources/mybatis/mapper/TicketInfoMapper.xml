@@ -138,7 +138,7 @@
       #{updateby,jdbcType=VARCHAR}, #{updatetime,jdbcType=TIMESTAMP}, #{content,jdbcType=LONGVARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.peiying.herra.po.TicketInfo">
+  <insert id="insertSelective" parameterType="com.peiying.herra.po.TicketInfo"  useGeneratedKeys="true" keyProperty="id">
     insert into ticketinfo
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -322,4 +322,14 @@
       UpdateTime = #{updatetime,jdbcType=TIMESTAMP}
     where Id = #{id,jdbcType=BIGINT}
   </update>
+  
+    <select id="selectByTicketId" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from ticketinfo
+    where TicketId = #{ticketId,jdbcType=BIGINT}
+  </select>
+  
 </mapper>

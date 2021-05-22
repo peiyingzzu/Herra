@@ -30,6 +30,14 @@ public class TicketInfoBaseService {
 		}
 	}
 
+	public TicketInfo selectByTicketId(long ticketId) {
+		try {
+			return ticketInfoMapper.selectByTicketId(ticketId);
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
 	public List<TicketInfo> selectByItemId(int itemId) {
 		TicketInfoExample example = new TicketInfoExample();
 		example.createCriteria().andItemidEqualTo(itemId);
@@ -37,6 +45,18 @@ public class TicketInfoBaseService {
 			return ticketInfoMapper.selectByExampleWithBLOBs(example);
 		} catch (Exception e) {
 			return null;
+		}
+	}
+
+	public boolean updateByTickedId(TicketInfo po, long ticketId) {
+		try {
+			TicketInfo selectByTicketId = selectByTicketId(ticketId);
+			if (null == selectByTicketId) {
+				return false;
+			}
+			return ticketInfoMapper.updateByPrimaryKeySelective(po) > 0;
+		} catch (Exception e) {
+			return false;
 		}
 	}
 }

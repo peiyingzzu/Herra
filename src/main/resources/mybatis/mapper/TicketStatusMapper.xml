@@ -321,4 +321,11 @@
       UpdateTime = #{updatetime,jdbcType=TIMESTAMP}
     where Id = #{id,jdbcType=BIGINT}
   </update>
+  
+  <select id="selectByTicketId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ticketStatus
+    where TicketId = #{ticketId,jdbcType=BIGINT}
+  </select>
 </mapper>

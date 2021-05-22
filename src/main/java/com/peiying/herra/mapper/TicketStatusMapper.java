@@ -21,6 +21,8 @@ public interface TicketStatusMapper {
     List<TicketStatus> selectByExample(TicketStatusExample example);
 
     TicketStatus selectByPrimaryKey(Long id);
+    
+    TicketStatus selectByTicketId(Long id);
 
     int updateByExampleSelective(@Param("record") TicketStatus record, @Param("example") TicketStatusExample example);
 

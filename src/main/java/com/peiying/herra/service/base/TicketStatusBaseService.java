@@ -43,4 +43,14 @@ public class TicketStatusBaseService {
 		}
 		return ticketStatusMapper.selectByExample(example);
 	}
+
+	public boolean updateByTicketId(TicketStatus po, long ticketId) {
+		TicketStatusExample example = new TicketStatusExample();
+		example.createCriteria().andTicketidEqualTo(ticketId);
+		try {
+			return ticketStatusMapper.updateByExampleSelective(po, example) > 0;
+		} catch (Exception e) {
+			return false;
+		}
+	}
 }

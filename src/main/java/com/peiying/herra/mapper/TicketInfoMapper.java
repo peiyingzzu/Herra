@@ -23,6 +23,8 @@ public interface TicketInfoMapper {
     List<TicketInfo> selectByExample(TicketInfoExample example);
 
     TicketInfo selectByPrimaryKey(Long id);
+    
+    TicketInfo selectByTicketId(Long ticketId);
 
     int updateByExampleSelective(@Param("record") TicketInfo record, @Param("example") TicketInfoExample example);
 
