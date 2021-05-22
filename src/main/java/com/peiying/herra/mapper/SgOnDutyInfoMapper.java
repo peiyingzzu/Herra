@@ -29,4 +29,6 @@ public interface SgOnDutyInfoMapper {
     int updateByPrimaryKeySelective(SgOnDutyInfo record);
 
     int updateByPrimaryKey(SgOnDutyInfo record);
+    
+    String selectOnCallUserBySgId(int sgId);
 }

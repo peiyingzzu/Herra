@@ -24,7 +24,7 @@ public class TicketStatusBaseService {
 	}
 
 	public List<TicketStatus> slectByEntity(TicketStatus po) {
-		TicketStatusExample example = new  TicketStatusExample();
+		TicketStatusExample example = new TicketStatusExample();
 		Criteria createCriteria = example.createCriteria();
 		if (po == null) {
 			return null;

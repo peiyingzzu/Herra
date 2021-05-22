@@ -23,12 +23,12 @@ public class SgUserRelationBaseService {
 		}
 	}
 
-	public List<SgUserRelation> batchInsert(List<SgUserRelation> poList) {
-		List<SgUserRelation> result = new ArrayList<>();
+	public List<String> batchInsert(List<SgUserRelation> poList) {
+		List<String> result = new ArrayList<>();
 		for (SgUserRelation sg : poList) {
 			boolean insert = insert(sg);
 			if (!insert) {
-				result.add(sg);
+				result.add(sg.getUserno());
 			}
 		}
 		return result;

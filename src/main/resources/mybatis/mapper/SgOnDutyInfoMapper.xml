@@ -289,4 +289,13 @@
       UpdateTime = #{updatetime,jdbcType=TIMESTAMP}
     where Id = #{id,jdbcType=INTEGER}
   </update>
+  <select id = "selectOnCallUserBySgId" parameterType="java.lang.Integer" resultType="java.lang.String">
+  	SELECT UserNo
+  	FROM SgOnDutyInfo
+  	WHERE
+  	SgId = #{sgId, jdbcType=INTEGER}
+  	AND
+  	DutyStatus = 10;
+  </select>
+  
 </mapper>
