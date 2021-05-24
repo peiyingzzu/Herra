@@ -1,5 +1,8 @@
 package com.peiying.herra.service.impl;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -62,6 +65,48 @@ public class DepCategoryItemServiceImpl implements DepCategoryItemService {
 			return ResponseBuilder.success(add2);
 		}
 		return ResponseBuilder.fail(CodeConstant.SYS_ERR, "添加失败");
+	}
+
+	@Override
+	public Response<List<DepInfoBO>> getAllDepInfo() {
+		List<DepInfo> all = depInfoBaseService.getAll();
+		if (all == null) {
+			ResponseBuilder.fail(CodeConstant.SYS_ERR, "查询失败");
+		}
+		List<DepInfoBO> collect = all.stream().map((a) -> {
+			DepInfoBO bo = new DepInfoBO();
+			BeanUtils.copyProperties(a, bo);
+			return bo;
+		}).collect(Collectors.toList());
+		return ResponseBuilder.success(collect);
+	}
+
+	@Override
+	public Response<List<CategoryInfoBO>> getAllCategoryInfoByDepId(int depId) {
+		List<CategoryInfo> selectByDepId = categoryBaseService.selectByDepId(depId);
+		if (selectByDepId == null) {
+			return ResponseBuilder.fail(CodeConstant.SYS_ERR, "系统异常");
+		}
+		List<CategoryInfoBO> collect = selectByDepId.stream().map((a) -> {
+			CategoryInfoBO bo = new CategoryInfoBO();
+			BeanUtils.copyProperties(a, bo);
+			return bo;
+		}).collect(Collectors.toList());
+		return ResponseBuilder.success(collect);
+	}
+
+	@Override
+	public Response<List<ItemInfoBO>> getAllItemInfoByCategoryId(int categoryId) {
+		List<ItemInfo> selectByCategoryId = itemInfoBaseService.selectByCategoryId(categoryId);
+		if (selectByCategoryId == null) {
+			return ResponseBuilder.fail(CodeConstant.SYS_ERR, "系统异常");
+		}
+		List<ItemInfoBO> collect = selectByCategoryId.stream().map((a) -> {
+			ItemInfoBO bo = new ItemInfoBO();
+			BeanUtils.copyProperties(a, bo);
+			return bo;
+		}).collect(Collectors.toList());
+		return ResponseBuilder.success(collect);
 	}
 
 }
