@@ -14,9 +14,11 @@ import com.peiying.herra.common.constants.TicketStatusCode;
 import com.peiying.herra.common.utils.Response;
 import com.peiying.herra.common.utils.ResponseBuilder;
 import com.peiying.herra.po.TicketInfo;
+import com.peiying.herra.po.TicketRecord;
 import com.peiying.herra.po.TicketStatus;
 import com.peiying.herra.service.TicketService;
 import com.peiying.herra.service.base.TicketInfoBaseService;
+import com.peiying.herra.service.base.TicketRecordBaseService;
 import com.peiying.herra.service.base.TicketStatusBaseService;
 
 @Service
@@ -25,6 +27,8 @@ public class TicketServiceImpl implements TicketService {
 	private TicketInfoBaseService ticketInfoBaseService;
 	@Autowired
 	private TicketStatusBaseService ticketStatusBaseService;
+	@Autowired
+	private TicketRecordBaseService ticketRecordBaseService;
 
 	@Override
 	public Response<Boolean> createTicket(TicketInfoBO ticketInfoBO, TicketStatusBO ticketStatusBO) {
@@ -89,6 +93,44 @@ public class TicketServiceImpl implements TicketService {
 		ticketStatusPO.setUpdatetime(new Date());
 		boolean updateByTicketId = ticketStatusBaseService.updateByTicketId(ticketStatusPO, ticketId);
 		return ResponseBuilder.success(updateByTicketId);
+	}
+
+	@Override
+	public Response<Boolean> archiveTicket(int citicketclassid, String solution, String operator, long ticketId) {
+		TicketRecord selectByTicketId = ticketRecordBaseService.selectByTicketId(ticketId);
+		TicketStatus ticketStatus = ticketStatusBaseService.selectByTicketId(ticketId);
+		if (ticketStatus == null) {
+			return ResponseBuilder.fail(CodeConstant.BAD_REQUEST, "ticket status is null, ticketId is " + ticketId);
+		}
+		ticketStatus.setSolvedtime(new Date());
+		ticketStatus.setUpdateby(operator);
+		ticketStatus.setUpdatetime(new Date());
+		ticketStatus.setStatus(TicketStatusCode.SOLVED);
+		ticketStatusBaseService.updateByTicketId(ticketStatus, ticketId);
+		long startTime = ticketStatus.getCreatetime().getTime();
+		long responseTime = ticketStatus.getResponsetime().getTime();
+		long solvedTime = ticketStatus.getSolvedtime().getTime();
+		boolean add = true;
+		if (selectByTicketId == null) {
+			selectByTicketId = new TicketRecord();
+			selectByTicketId.setCreateby(operator);
+			selectByTicketId.setCreatetime(new Date());
+			selectByTicketId.setTicketid(ticketId);
+		} else {
+			selectByTicketId.setUpdateby(operator);
+			selectByTicketId.setUpdatetime(new Date());
+			add = false;
+		}
+		selectByTicketId.setCiticketclassid(citicketclassid);
+		selectByTicketId.setSolution(solution);
+		selectByTicketId.setResponseduration(responseTime - startTime);
+		selectByTicketId.setSolvedduration(solvedTime);
+		if (add) {
+			ticketRecordBaseService.add(selectByTicketId);
+		} else {
+			ticketRecordBaseService.updateByTicket(selectByTicketId, ticketId);
+		}
+		return ResponseBuilder.success(Boolean.TRUE);
 	}
 
 }

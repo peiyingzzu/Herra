@@ -46,4 +46,14 @@ public class TicketRecordBaseService {
 		}
 	}
 
+	public boolean updateByTicket(TicketRecord po, long ticketId) {
+		try {
+			TicketRecordExample example = new TicketRecordExample();
+			example.createCriteria().andTicketidEqualTo(ticketId);
+			return ticketRecordMapper.updateByExampleSelective(po, example) > 0;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
 }

@@ -23,6 +23,14 @@ public class TicketStatusBaseService {
 		}
 	}
 
+	public TicketStatus selectByTicketId(long ticketId) {
+		try {
+			return ticketStatusMapper.selectByTicketId(ticketId);
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
 	public List<TicketStatus> slectByEntity(TicketStatus po) {
 		TicketStatusExample example = new TicketStatusExample();
 		Criteria createCriteria = example.createCriteria();
