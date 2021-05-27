@@ -21,7 +21,7 @@ public class UserInfoController {
 	UserInfoService userInfoService;
 
 	@RequestMapping("/add")
-	public Response<Boolean> add(@RequestBody UserInfoVO userVO) {
+	public Response<String> add(@RequestBody UserInfoVO userVO) {
 		if (userVO == null) {
 			return ResponseBuilder.fail(CodeConstant.BAD_REQUEST, "requrest is null");
 		}
@@ -34,7 +34,14 @@ public class UserInfoController {
 		try {
 			UserInfoBO bo = new UserInfoBO();
 			BeanUtils.copyProperties(userVO, bo);
-			return userInfoService.addUser(bo);
+			Response<String> addUser = userInfoService.addUser(bo, userVO.getPassword());
+			if (addUser == null) {
+				return ResponseBuilder.fail(CodeConstant.SYS_ERR, "系统异常");
+			}
+			if (addUser.getCode() != 200) {
+				return ResponseBuilder.fail(addUser.getCode(), addUser.getMsg());
+			}
+			return ResponseBuilder.success(addUser.getData());
 		} catch (Exception e) {
 			return ResponseBuilder.fail(CodeConstant.SYS_ERR, "系统异常");
 		}

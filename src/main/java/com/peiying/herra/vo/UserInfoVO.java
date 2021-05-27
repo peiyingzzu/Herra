@@ -3,9 +3,11 @@ package com.peiying.herra.vo;
 import java.util.Date;
 
 public class UserInfoVO extends BaseEntity {
-    private Long id;
+	private Long id;
 
 	private String userno;
+
+	private String password;
 
 	private String name;
 
@@ -101,6 +103,14 @@ public class UserInfoVO extends BaseEntity {
 
 	public void setUpdatetime(Date updatetime) {
 		this.updatetime = updatetime;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 }

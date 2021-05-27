@@ -23,7 +23,7 @@ public class UserAccountServiceImpl implements UserAccountService {
 	private UserLoginBaseService userLoginBaseService;
 
 	@Override
-	public Response<Boolean> logup(String userName, String password) {
+	public Response<Boolean> signUp(String userName, String password) {
 		if (StringUtils.isAllEmpty(userName, password)) {
 			return ResponseBuilder.fail(CodeConstant.BAD_REQUEST, "参数异常");
 		}
@@ -53,8 +53,10 @@ public class UserAccountServiceImpl implements UserAccountService {
 			selectByUserNo.setCreateTime(new Date());
 			selectByUserNo.setStatus(LoginConstant.ONLINE);
 			selectByUserNo.setUserName(userName);
+			selectByUserNo.setToken(userName+password);
 			reuslt = userLoginBaseService.add(selectByUserNo);
 		} else {
+			selectByUserNo.setToken(userName+password);
 			selectByUserNo.setUpdateBy(userName);
 			selectByUserNo.setUpdateTime(new Date());
 			selectByUserNo.setStatus(LoginConstant.ONLINE);

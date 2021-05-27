@@ -6,12 +6,15 @@ import java.util.Optional;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.peiying.herra.bo.UserInfoBO;
 import com.peiying.herra.common.constants.CodeConstant;
+import com.peiying.herra.common.utils.PinYinUtil;
 import com.peiying.herra.common.utils.Response;
 import com.peiying.herra.common.utils.ResponseBuilder;
 import com.peiying.herra.po.UserInfo;
+import com.peiying.herra.service.UserAccountService;
 import com.peiying.herra.service.UserInfoService;
 import com.peiying.herra.service.base.UserInfoBaseService;
 
@@ -19,16 +22,18 @@ import com.peiying.herra.service.base.UserInfoBaseService;
 public class UserInfoServiceImpl implements UserInfoService {
 	@Autowired
 	private UserInfoBaseService userInfoBaseService;
+	@Autowired
+	private UserAccountService userAccountService;
 
-	public Response<Boolean> addUser(UserInfoBO userInfoBO) {
+	@Transactional
+	public Response<String> addUser(UserInfoBO userInfoBO, String password) {
 		if (userInfoBO == null) {
 			return ResponseBuilder.fail(CodeConstant.BAD_REQUEST, "requrest is null");
 		}
 		if (userInfoBO.getDepid() == null) {
 			return ResponseBuilder.fail(CodeConstant.BAD_REQUEST, "requrest is null");
 		}
-		if (StringUtils.isAnyEmpty(userInfoBO.getCreateby(), userInfoBO.getName(), userInfoBO.getPhone(),
-				userInfoBO.getUserno())) {
+		if (StringUtils.isAnyEmpty(userInfoBO.getCreateby(), userInfoBO.getName(), userInfoBO.getPhone())) {
 			return ResponseBuilder.fail(CodeConstant.BAD_REQUEST, "requrest is null");
 		}
 		String phone = userInfoBO.getPhone();
@@ -37,7 +42,8 @@ public class UserInfoServiceImpl implements UserInfoService {
 			return ResponseBuilder.fail(CodeConstant.USER_HAS_EXIST,
 					"phone is exist, please try with username is " + userByUserNO.getUserno());
 		}
-		String userNo = userInfoBO.getUserno();
+		String userNo = PinYinUtil.getPinyin(userInfoBO.getName());// 获取员工姓名拼音
+		userInfoBO.setUserno(userNo);
 		userByUserNO = userInfoBaseService.getUserByUserNO(userInfoBO.getUserno());
 		if (userByUserNO != null) {
 			synchronized (this) {
@@ -51,12 +57,17 @@ public class UserInfoServiceImpl implements UserInfoService {
 				} else {
 					nexSequence = Integer.parseInt(sequence) + 1;
 				}
-				return ResponseBuilder.fail(CodeConstant.USER_HAS_EXIST, "UserNo is exist, please try " + userNo + nexSequence);
+				userNo = userNo + nexSequence;
+				userInfoBO.setUserno(userNo);
 			}
 		}
-
 		boolean addUser = userInfoBaseService.addUser(userInfoBO);
-		return ResponseBuilder.success(addUser);
+		if (addUser) {
+			userAccountService.signUp(userNo, password);
+		} else {
+			throw new RuntimeException("用户注册失败，事务回滚");
+		}
+		return ResponseBuilder.success(userInfoBO.getUserno());
 	}
 
 	public Response<UserInfo> getUserByUserNO(String userNO) {
