@@ -241,4 +241,12 @@
       UpdateTime = #{updatetime,jdbcType=TIMESTAMP}
     where Id = #{id,jdbcType=INTEGER}
   </update>
+  <delete id="deleteBySgIdAndUserNo">
+  	DELETE
+  	FROM sguserrelation
+  	WHERE
+  	SgId = #{sgid,jdbcType=INTEGER}
+  	AND
+  	UserNo = #{userno,jdbcType=VARCHAR}
+  </delete>
 </mapper>

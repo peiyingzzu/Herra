@@ -29,4 +29,6 @@ public interface SgUserRelationMapper {
     int updateByPrimaryKeySelective(SgUserRelation record);
 
     int updateByPrimaryKey(SgUserRelation record);
+    
+	int deleteBySgIdAndUserNo(@Param("sgId") int sgId, @Param("userNo") String userNo);
 }

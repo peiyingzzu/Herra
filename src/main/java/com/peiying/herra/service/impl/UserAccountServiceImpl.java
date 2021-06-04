@@ -4,6 +4,7 @@ import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.peiying.herra.common.constants.CodeConstant;
 import com.peiying.herra.common.constants.LoginConstant;
@@ -16,6 +17,7 @@ import com.peiying.herra.service.UserAccountService;
 import com.peiying.herra.service.base.UserAccountBaseService;
 import com.peiying.herra.service.base.UserLoginBaseService;
 
+@Service
 public class UserAccountServiceImpl implements UserAccountService {
 	@Autowired
 	private UserAccountBaseService userAccountBaseService;

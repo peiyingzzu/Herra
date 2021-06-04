@@ -1,14 +1,17 @@
 package com.peiying.herra.service.base;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.peiying.herra.mapper.ServerGroupInfoMapper;
 import com.peiying.herra.po.ServerGroupInfo;
+import com.peiying.herra.po.ServerGroupInfoExample;
 
 @Component
 public class ServiceGroupBaseService {
-	
+
 	@Autowired
 	private ServerGroupInfoMapper serverGroupInfoMapper;
 
@@ -35,4 +38,15 @@ public class ServiceGroupBaseService {
 			return null;
 		}
 	}
+
+	public List<ServerGroupInfo> selectByOwner(String owner) {
+		ServerGroupInfoExample example = new ServerGroupInfoExample();
+		example.createCriteria().andOwnerusernoEqualTo(owner);
+		try {
+			return serverGroupInfoMapper.selectByExample(example);
+		} catch (Exception e) {
+			return null;
+		}
+	}
+	
 }

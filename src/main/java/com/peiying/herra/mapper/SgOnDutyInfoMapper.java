@@ -30,5 +30,5 @@ public interface SgOnDutyInfoMapper {
 
     int updateByPrimaryKey(SgOnDutyInfo record);
     
-    String selectOnCallUserBySgId(int sgId);
+    SgOnDutyInfo selectOnCallUserBySgId(int sgId);
 }

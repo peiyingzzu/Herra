@@ -2,6 +2,7 @@ package com.peiying.herra.service.base;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -34,17 +35,46 @@ public class SgUserRelationBaseService {
 		return result;
 	}
 
-	public Integer selectSgIdByUser(String userNo) {
+	public List<Integer> selectSgIdByUser(String userNo) {
 		SgUserRelationExample example = new SgUserRelationExample();
 		example.createCriteria().andUsernoEqualTo(userNo);
 		try {
-			List<SgUserRelation> selectByExample = sgUserRelationMapper.selectByExample(example);
-			if (selectByExample != null && selectByExample.size() != 1) {
-				return null;
-			}
-			return selectByExample.get(0).getSgid();
+			return sgUserRelationMapper.selectByExample(example).stream().map(SgUserRelation::getSgid)
+					.collect(Collectors.toList());
 		} catch (Exception e) {
 			return null;
 		}
+	}
+
+	public SgUserRelation selectSgIdByUserAndSgId(String userNo, int sgId) {
+		SgUserRelationExample example = new SgUserRelationExample();
+		example.createCriteria().andUsernoEqualTo(userNo).andSgidEqualTo(sgId);
+		try {
+			List<SgUserRelation> selectByExample = sgUserRelationMapper.selectByExample(example);
+			if (selectByExample == null) {
+				return null;
+			}
+			if (selectByExample.size() != 1) {
+				return null;
+			}
+			return selectByExample.get(0);
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	public boolean deleteBySgIdAndUserNo(int sgId, String userNo) {
+		try {
+			return sgUserRelationMapper.deleteBySgIdAndUserNo(sgId, userNo) > 0;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	public boolean batchDeleteBySgIdAndUserNo(int sgId, List<String> userNoList) {
+		for (String suerNo : userNoList) {
+			deleteBySgIdAndUserNo(sgId, suerNo);
+		}
+		return true;
 	}
 }

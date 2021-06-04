@@ -10,7 +10,9 @@ public interface ServiceGroupService {
 
 	Response<Boolean> add(ServerGroupInfoBO serverGroupInfoBO);
 
-	Response<Boolean> addUsers(int sgId, List<String> userNoList);
+	Response<Boolean> addUsers(int sgId, List<String> userNoList, String operator);
 	
-	Response<Boolean> configOnDuty(SgOnDutyConfigBO bo);
+	Response<Boolean> deleteUsers(int sgId, List<String> userNoList, String operator);
+
+	Response<Boolean> addConfigOnDuty(SgOnDutyConfigBO bo);
 }

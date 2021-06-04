@@ -289,8 +289,8 @@
       UpdateTime = #{updatetime,jdbcType=TIMESTAMP}
     where Id = #{id,jdbcType=INTEGER}
   </update>
-  <select id = "selectOnCallUserBySgId" parameterType="java.lang.Integer" resultType="java.lang.String">
-  	SELECT UserNo
+  <select id = "selectOnCallUserBySgId" parameterType="java.lang.Integer" resultType="com.peiying.herra.po.SgOnDutyInfo">
+  	SELECT Base_Column_List
   	FROM SgOnDutyInfo
   	WHERE
   	SgId = #{sgId, jdbcType=INTEGER}

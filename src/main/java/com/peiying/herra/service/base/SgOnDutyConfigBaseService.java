@@ -35,4 +35,14 @@ public class SgOnDutyConfigBaseService {
 			return null;
 		}
 	}
+
+	public List<SgOnDutyConfig> selectAll() {
+		SgOnDutyConfigExample example = new SgOnDutyConfigExample();
+		try {
+			return sgOnDutyConfigMapper.selectByExample(example);
+		} catch (Exception e) {
+			return null;
+		}
+
+	}
 }

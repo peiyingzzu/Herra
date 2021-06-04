@@ -50,9 +50,28 @@ public class ServiceGroupController {
 			return ResponseBuilder.fail(CodeConstant.BAD_REQUEST, "add user count less than 1");
 		}
 		try {
-			return serviceGroupService.addUsers(request.getSgId(), request.getUserList());
+			return serviceGroupService.addUsers(request.getSgId(), request.getUserList(), request.getOperator());
 		} catch (Exception e) {
 			return ResponseBuilder.fail(CodeConstant.SYS_ERR, "系统异常");
 		}
 	}
+
+	@RequestMapping("/delete/users")
+	public Response<Boolean> deleteUsers(@RequestBody AddUsersToSgRequest request) {
+		if (request == null) {
+			return ResponseBuilder.fail(CodeConstant.BAD_REQUEST, "requrest is null");
+		}
+		if (request.getSgId() == null || request.getUserList() == null) {
+			return ResponseBuilder.fail(CodeConstant.BAD_REQUEST, "requrest exist field is null");
+		}
+		if (request.getUserList().size() < 1) {
+			return ResponseBuilder.fail(CodeConstant.BAD_REQUEST, "add user count less than 1");
+		}
+		try {
+			return serviceGroupService.deleteUsers(request.getSgId(), request.getUserList(), request.getOperator());
+		} catch (Exception e) {
+			return ResponseBuilder.fail(CodeConstant.SYS_ERR, "系统异常");
+		}
+	}
+
 }

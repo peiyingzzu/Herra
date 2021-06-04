@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.peiying.herra.bo.CategoryInfoBO;
 import com.peiying.herra.bo.DepInfoBO;
@@ -50,6 +51,7 @@ public class DepCategoryItemServiceImpl implements DepCategoryItemService {
 		return ResponseBuilder.success(add);
 	}
 
+	@Transactional
 	@Override
 	public Response<Boolean> addItem(ItemInfoBO bo, int sgId) {
 		ItemInfo po = new ItemInfo();
@@ -62,6 +64,9 @@ public class DepCategoryItemServiceImpl implements DepCategoryItemService {
 			itemSgRelationPo.setItemid(bo.getId());
 			itemSgRelationPo.setSgid(sgId);
 			boolean add2 = itemSgRelationBaseService.add(itemSgRelationPo);
+			if (!add2) {
+				throw new RuntimeException("添加失败， 事务回滚");
+			}
 			return ResponseBuilder.success(add2);
 		}
 		return ResponseBuilder.fail(CodeConstant.SYS_ERR, "添加失败");
@@ -108,5 +113,4 @@ public class DepCategoryItemServiceImpl implements DepCategoryItemService {
 		}).collect(Collectors.toList());
 		return ResponseBuilder.success(collect);
 	}
-
 }
