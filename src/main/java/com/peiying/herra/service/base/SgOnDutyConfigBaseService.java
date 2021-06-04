@@ -43,6 +43,15 @@ public class SgOnDutyConfigBaseService {
 		} catch (Exception e) {
 			return null;
 		}
+	}
 
+	public boolean updateBySgId(SgOnDutyConfig po, int sgId) {
+		SgOnDutyConfigExample example = new SgOnDutyConfigExample();
+		example.createCriteria().andSgidEqualTo(sgId);
+		try {
+			return sgOnDutyConfigMapper.updateByExampleSelective(po, example) > 0;
+		} catch (Exception e) {
+			return false;
+		}
 	}
 }

@@ -15,4 +15,5 @@ public interface ServiceGroupService {
 	Response<Boolean> deleteUsers(int sgId, List<String> userNoList, String operator);
 
 	Response<Boolean> addConfigOnDuty(SgOnDutyConfigBO bo);
+
 }

@@ -8,12 +8,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.peiying.herra.bo.ServerGroupInfoBO;
+import com.peiying.herra.bo.SgOnDutyConfigBO;
 import com.peiying.herra.common.constants.CodeConstant;
 import com.peiying.herra.common.utils.Response;
 import com.peiying.herra.common.utils.ResponseBuilder;
 import com.peiying.herra.service.ServiceGroupService;
 import com.peiying.herra.vo.AddUsersToSgRequest;
 import com.peiying.herra.vo.ServerGroupInfoVO;
+import com.peiying.herra.vo.SgOnDutyConfigVO;
 
 @RestController
 @RequestMapping("/herra/sg")
@@ -74,4 +76,17 @@ public class ServiceGroupController {
 		}
 	}
 
+	@RequestMapping("/config")
+	public Response<Boolean> config(@RequestBody SgOnDutyConfigVO request) {
+		if (request == null) {
+			return ResponseBuilder.fail(CodeConstant.BAD_REQUEST, "requrest is null");
+		}
+		try {
+			SgOnDutyConfigBO bo = new SgOnDutyConfigBO();
+			BeanUtils.copyProperties(request, bo);
+			return serviceGroupService.addConfigOnDuty(bo);
+		} catch (Exception e) {
+			return ResponseBuilder.fail(CodeConstant.SYS_ERR, "系统异常");
+		}
+	}
 }

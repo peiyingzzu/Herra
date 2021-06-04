@@ -138,8 +138,14 @@ public class ServiceGroupServiceImpl implements ServiceGroupService {
 		}
 		SgOnDutyConfig po = new SgOnDutyConfig();
 		BeanUtils.copyProperties(bo, po);
-		boolean add = sgOnDutyConfigBaseService.add(po);
-		if (add) {
+		SgOnDutyConfig selectBySgId = sgOnDutyConfigBaseService.selectBySgId(bo.getSgid());
+		boolean operateResult = false;
+		if (selectBySgId == null) {
+			operateResult = sgOnDutyConfigBaseService.add(po);
+		} else {
+			operateResult = sgOnDutyConfigBaseService.updateBySgId(po, po.getSgid());
+		}
+		if (operateResult) {
 			Date zeroDate = DateTimeUtil.getZeroDate(new Date());
 			int incur = 1;
 			if (bo.getDutytype() == DutyTypeCode.SEVEN_DAY_PER) {
@@ -160,10 +166,14 @@ public class ServiceGroupServiceImpl implements ServiceGroupService {
 				}
 				sgOnDutyInfo.setSgid(bo.getSgid());
 				sgOnDutyInfo.setUserno(split[i]);
-				sgOnDutyInfoBaseService.add(sgOnDutyInfo);
+				SgOnDutyInfo selectBySgIdAndUserNo = sgOnDutyInfoBaseService.selectBySgIdAndUserNo(sgOnDutyInfo.getSgid(), sgOnDutyInfo.getUserno());
+				if (selectBySgIdAndUserNo == null) {
+					sgOnDutyInfoBaseService.add(sgOnDutyInfo);
+				} else {
+					sgOnDutyInfoBaseService.updateById(sgOnDutyInfo, selectBySgIdAndUserNo.getId());
+				}
 			}
 		}
-		return ResponseBuilder.success(add);
+		return ResponseBuilder.success(operateResult);
 	}
-
 }
